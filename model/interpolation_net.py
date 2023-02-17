@@ -7,6 +7,7 @@ import torch.nn.functional as F
 from utils.arap_interpolation import *
 from data.data import *
 from model.layers import *
+from tqdm import tqdm
 
 
 class NetParam(ParamBase):
@@ -207,7 +208,7 @@ class InterpolNet:
 
             self.update_settings()
 
-            for i, data in enumerate(self.train_loader):
+            for i, data in enumerate(tqdm(self.train_loader)):
                 shape_x = batch_to_shape(data["X"])
                 shape_y = batch_to_shape(data["Y"])
 

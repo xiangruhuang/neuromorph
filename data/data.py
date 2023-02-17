@@ -172,8 +172,8 @@ class ShapeDatasetCombineRemesh(ShapeDatasetBase):
         data_new["X"] = dict()
         data_new["Y"] = dict()
 
-        idx_x = idx_arr_x[i_mesh_x][0].astype(np.long) - 1
-        idx_y = idx_arr_y[i_mesh_y][0].astype(np.long) - 1
+        idx_x = idx_arr_x[i_mesh_x][0].astype(np.int64) - 1
+        idx_y = idx_arr_y[i_mesh_y][0].astype(np.int64) - 1
 
         data_new["X"]["vert_full"] = data_curr["X"]["vert"]
         data_new["Y"]["vert_full"] = data_curr["Y"]["vert"]
@@ -182,8 +182,8 @@ class ShapeDatasetCombineRemesh(ShapeDatasetBase):
 
         data_new["X"]["vert"] = data_curr["X"]["vert"][idx_x, :]
         data_new["Y"]["vert"] = data_curr["Y"]["vert"][idx_y, :]
-        data_new["X"]["triv"] = triv_arr_x[i_mesh_x][0].astype(np.long)
-        data_new["Y"]["triv"] = triv_arr_y[i_mesh_y][0].astype(np.long)
+        data_new["X"]["triv"] = triv_arr_x[i_mesh_x][0].astype(np.int64)
+        data_new["Y"]["triv"] = triv_arr_y[i_mesh_y][0].astype(np.int64)
 
         if "D" in data_curr["X"]:
             idx_x = idx_x.squeeze()

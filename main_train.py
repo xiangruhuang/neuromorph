@@ -104,6 +104,7 @@ def start_train(dataset, dataset_val=None, folder_weights_load=None):
         dataset, dataset_val=dataset_val, folder_weights_load=folder_weights_load
     )
 
+    print('Training.......')
     interpol.train()
 
     return interpol
