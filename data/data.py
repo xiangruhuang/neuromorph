@@ -225,7 +225,7 @@ def get_shrec20_folder(resolution):
 
 
 class Faust_remeshed_train(ShapeDatasetCombine):
-    def __init__(self, resolution, num_shapes=80, load_dist_mat=False, load_sub=False):
+    def __init__(self, resolution, num_shapes=1000, load_dist_mat=False, load_sub=False):
         self.resolution = resolution
         super().__init__(get_faust_remeshed_folder(resolution), num_shapes, load_dist_mat=load_dist_mat, load_sub=load_sub)
 
@@ -234,12 +234,22 @@ class Faust_remeshed_train(ShapeDatasetCombine):
 
 
 class Faust_remeshed_test(ShapeDatasetCombine):
-    def __init__(self, resolution, num_shapes=20, load_dist_mat=False, load_sub=False):
+    def __init__(self, resolution, num_shapes=1000, load_dist_mat=False, load_sub=False):
         self.resolution = resolution
         super().__init__(get_faust_remeshed_folder(resolution), num_shapes, load_dist_mat=load_dist_mat, load_sub=load_sub)
+        self.num_pairs = self.num_shapes - 1
 
     def _get_index(self, i):
-        return i+80
+        return i
+
+    def __getitem__(self, index):
+        i1 = 0 
+        i2 = index + 1
+        data_curr = dict()
+        data_curr["X"] = self.data[i1]
+        data_curr["Y"] = self.data[i2]
+        data_curr["axis"] = self.axis
+        return data_curr
 
     def dataset_name_str(self):
         return "FAUST_remeshed_" + str(self.resolution) + "_test"
