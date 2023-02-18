@@ -7,6 +7,7 @@ import random
 import torch.utils.data
 import scipy.io
 from utils.shape_utils import *
+from tqdm import tqdm
 
 
 def input_to_batch(mat_dict):
@@ -70,13 +71,14 @@ class ShapeDatasetInMemory(ShapeDatasetBase):
         self._init_data()
 
     def _init_data(self):
-        for i in range(self.num_shapes):
+        print("Loading In Memory Dataset...")
+        for i in tqdm(range(self.num_shapes)):
             file_name = self._get_file(self._get_index(i))
             load_data = scipy.io.loadmat(file_name)
 
             data_curr = input_to_batch(load_data["X"][0])
 
-            print("Loaded file ", file_name, "")
+            #print("Loaded file ", file_name, "")
 
             if self.load_dist_mat:
                 file_name = self._get_file_from_folder(self._get_index(i),
@@ -84,7 +86,7 @@ class ShapeDatasetInMemory(ShapeDatasetBase):
                 load_dist = scipy.io.loadmat(file_name)
                 load_dist["D"][load_dist["D"] > 1e2] = 2
                 data_curr["D"] = np.asarray(load_dist["D"], dtype=np.float32)
-                print("Loaded file ", file_name, "")
+                #print("Loaded file ", file_name, "")
 
             self.data.append(data_curr)
 
@@ -142,13 +144,14 @@ class ShapeDatasetCombineRemesh(ShapeDatasetBase):
         self.idx_arr_arr = []
         self.triv_arr_arr = []
 
-        for i in range(self.dataset.num_shapes):
+        print("Loading Dataset...")
+        for i in tqdm(range(self.dataset.num_shapes)):
             remesh_file = self._get_file_from_folder(self.dataset._get_index(i), os.path.join(self.dataset.folder_path, self.remeshing_folder))
             mesh_info = scipy.io.loadmat(remesh_file)
             idx_arr = mesh_info["idx_arr"]
             triv_arr = mesh_info["triv_arr"]
 
-            print("Loaded file ", remesh_file, "")
+            #print("Loaded file ", remesh_file, "")
 
             self.idx_arr_arr.append(idx_arr)
             self.triv_arr_arr.append(triv_arr)
